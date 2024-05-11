@@ -17,7 +17,7 @@ export type ConcurrencyOptions<T> = {
 
 export type LimiterFunction<T> = (fn: (...args: any[]) => Promise<T>) => (...args: any[]) => Promise<T>
 
-export const concurrency = <T>(options: ConcurrencyOptions<T>): LimiterFunction<T> => {
+export const purrent = <T>(options: ConcurrencyOptions<T>): LimiterFunction<T> => {
   if (typeof options === 'number') {
     options = {
       concurrency: options
@@ -38,14 +38,14 @@ export const concurrency = <T>(options: ConcurrencyOptions<T>): LimiterFunction<
     throw new TypeError('concurrency must be a number from 1 and up')
   }
 
-  const limiter: LimiterFunction<T> = fn => {
+  const purrent: LimiterFunction<T> = fn => {
     function limited(this: any, ...args: any[]): Promise<any> {
       if (!when.apply(this, args)) {
         // Should not be limited
         return fn.apply(this, args) as Promise<any>
       }
 
-      const host: any = !!this && !useGlobalHost ? this : limiter
+      const host: any = !!this && !useGlobalHost ? this : purrent
       const info = host[key] || (host[key] = {
         size: 0,
         queue: []
@@ -86,5 +86,5 @@ export const concurrency = <T>(options: ConcurrencyOptions<T>): LimiterFunction<
     return limited
   }
 
-  return limiter
+  return purrent
 }
