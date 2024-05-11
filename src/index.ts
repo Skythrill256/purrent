@@ -2,7 +2,7 @@
 
 type QueueKey = symbol;
 
-const KEY: QueueKey = Symbol('p-concurrency:queue');
+const KEY: QueueKey = Symbol('purrent:queue');
 
 const DEFAULT_WHEN: (...args: any[]) => boolean = () => true;
 
